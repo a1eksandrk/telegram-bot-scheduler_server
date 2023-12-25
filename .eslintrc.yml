@@ -9,12 +9,15 @@ parserOptions:
   project:
     - tsconfig.json
 rules:
-  indent:
+  indent: error
+  object-curly-spacing: error
+
+  no-console: warn
+  no-debugger: warn
+
+  arrow-parens:
     - error
-    - 2
-  object-curly-spacing:
-    - error
-    - always
+    - as-needed
 
   "@typescript-eslint/no-floating-promises": 0
   "@typescript-eslint/prefer-nullish-coalescing": 0
