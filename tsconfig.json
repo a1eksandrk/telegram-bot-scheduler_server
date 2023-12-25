@@ -1,16 +1,18 @@
 {
+  "display": "Node 20",
   "compilerOptions": {
     "lib": ["es2023"],
     "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "Node",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "baseUrl": ".",
-    "paths": { "#*": ["src/*"] },
+    "rootDir": "src",
     "outDir": "dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "paths": { "#*": ["src/*"] },
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"],
   "exclude": ["dist", "node_modules"]
