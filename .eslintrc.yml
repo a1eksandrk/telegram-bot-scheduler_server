@@ -9,7 +9,14 @@ parserOptions:
   project:
     - tsconfig.json
 rules:
-  indent: error
+  indent:
+    - error
+    - 2
+    - ignoredNodes:
+        - FunctionExpression > .params[decorators.length > 0]
+        - FunctionExpression > .params > :matches(Decorator, :not(:first-child))
+        - ClassBody.body > PropertyDefinition[decorators.length > 0] > .key
+
   object-curly-spacing: error
 
   no-console: warn
@@ -19,6 +26,15 @@ rules:
     - error
     - as-needed
 
+  "@typescript-eslint/indent":
+    - error
+    - 2
+    - ignoredNodes:
+        - FunctionExpression > .params[decorators.length > 0]
+        - FunctionExpression > .params > :matches(Decorator, :not(:first-child))
+        - ClassBody.body > PropertyDefinition[decorators.length > 0] > .key
+
+  "@typescript-eslint/no-unsafe-argument": 0
   "@typescript-eslint/no-floating-promises": 0
   "@typescript-eslint/prefer-nullish-coalescing": 0
   "@typescript-eslint/strict-boolean-expressions": 0
