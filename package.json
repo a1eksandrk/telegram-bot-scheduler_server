@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "keywords": [],
   "type": "module",
-  "imports" : {
+  "imports": {
     "#*": "./dist/*"
   },
   "scripts": {
@@ -30,7 +30,12 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@fastify/awilix": "^4.0.0",
+    "awilix": "^9.0.0",
     "fastify": "^4.25.2",
-    "node-cron": "^3.0.3"
+    "node-cron": "^3.0.3",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.2.1",
+    "typeorm": "^0.3.17"
   }
 }
