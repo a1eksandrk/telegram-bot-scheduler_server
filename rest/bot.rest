@@ -1,0 +1,10 @@
+###
+GET http://127.0.0.1:5005/api/bot/1/chats
+
+###
+PUT http://127.0.0.1:5005/api/bot/connect
+Content-Type: application/json
+
+{
+  "token": ""
+}
