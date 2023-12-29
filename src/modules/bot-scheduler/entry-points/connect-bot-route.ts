@@ -1,6 +1,6 @@
-import { randomUUID } from 'node:crypto'
+import BotService from '../domain/bot-service.js'
 
-import type { FastifyRequest, FastifyReply, RouteShorthandOptions } from 'fastify'
+import type { FastifyInstance, RouteHandlerMethod, RouteShorthandOptions } from 'fastify'
 
 type ConnectBotBody = {
   token: string
@@ -8,7 +8,8 @@ type ConnectBotBody = {
 
 const successResponseScheme = {
   properties: {
-    id: { type: 'string' }
+    id: { type: 'number' },
+    token: { type: 'string' }
   }
 }
 
@@ -28,12 +29,33 @@ export const connectBotOptions: RouteShorthandOptions = {
   }
 }
 
-export const connectBotHandler = async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
-  const { token } = request.body as ConnectBotBody
+export const createConnectBotHandler = (_: FastifyInstance): RouteHandlerMethod => {
+  return async (request, reply) => {
+    const { token } = request.body as ConnectBotBody
+    const { BotEntity } = request.diScope.cradle.entities
+    const { botRepository } = request.diScope.cradle.repositories
 
-  const id = randomUUID()
+    const botService = new BotService(token)
 
-  const { botRepository } = request.diScope.cradle
+    try {
+      const bot = await botService.getMe()
 
-  reply.status(201).send({ id })
+      if (!bot) return await reply.status(404).send()
+
+      const fondedBot = await botRepository.findOneBy({ token })
+
+      if (fondedBot) return await reply.status(204).send(fondedBot)
+
+      const botEntity = new BotEntity()
+
+      botEntity.botId = bot.id
+      botEntity.token = bot.token
+
+      // await botRepository.save(botEntity)
+
+      reply.status(201).send(botEntity)
+    } catch (error) {
+      reply.status(500).send()
+    }
+  }
 }

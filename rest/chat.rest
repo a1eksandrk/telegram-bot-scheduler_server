@@ -1,0 +1,5 @@
+###
+GET http://127.0.0.1:5005/api/chat/1
+
+###
+GET http://127.0.0.1:5005/api/chats?botId=1

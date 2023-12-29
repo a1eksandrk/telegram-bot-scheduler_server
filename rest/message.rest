@@ -1,0 +1,13 @@
+###
+GET http://127.0.0.1:5005/api/messages?botId=1&chatId=1
+
+###
+POST http://127.0.0.1:5005/api/message
+Content-Type: application/json
+
+{
+  "text": "",
+  "datetime": "",
+  "botId": 1,
+  "chatId": 1
+}
