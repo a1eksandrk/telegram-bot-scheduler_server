@@ -1,39 +1,61 @@
-import type { BotDto } from './bot-dto.js'
+import { Telegraf } from 'telegraf'
 
-type TgResponse<Entity extends Record<string, unknown>> = {
-  ok: boolean
-  error_code?: number
-  description?: string
-  result?: Entity
-}
+import { createSubscriberToChatStatusUpdate } from '../lib.js'
 
-type BotResponse = Pick<BotDto, 'id'>
-
-const TG_API_URL = 'https://api.telegram.org'
+type SavedBotTuple = [boolean, BotEntity]
+export type TgBot = Telegraf
 
 class BotService {
-  private get tgApiUrl (): string {
-    return `${TG_API_URL}/bot${this.token}`
+  constructor (private readonly di: DI) {}
+
+  /**
+   * The function returns a tuple in which the first element indicates whether
+   * the entity was successfully saved in the database and the second element contains the saved entity.
+   */
+  public async authorize (token: string): Promise<SavedBotTuple | null> {
+    const tgBot = new Telegraf(token)
+    const savedBotTuple = await this.saveBot(tgBot, token)
+
+    this.launchBot(tgBot)
+
+    return savedBotTuple
   }
 
-  constructor (private readonly token: string) {}
+  private async saveBot (tgBot: TgBot, token: string): Promise<[boolean, BotEntity] | null> {
+    const { repositories: { botRepository } } = this.di
 
-  public async getMe (): Promise<BotDto | null> {
-    const method = 'getMe'
-    const url = this.buildUrl(method)
+    const fondedBotEntity = await botRepository.findOneBy({ token })
 
-    const response = await fetch(url, { method: 'GET' })
-    const tgResponce = await response.json() as TgResponse<BotResponse>
+    if (fondedBotEntity) return [false, fondedBotEntity]
 
-    if (!tgResponce.ok || !tgResponce.result) return null
+    const { id } = await tgBot.telegram.getMe()
 
-    const { id } = tgResponce.result
+    const savedBotEntity = this.createBotEntity({ botId: String(id), token })
 
-    return { id, token: this.token }
+    await botRepository.save(savedBotEntity)
+
+    return [true, savedBotEntity]
   }
 
-  private buildUrl (method: string): string {
-    return `${this.tgApiUrl}/${method}`
+  private createBotEntity ({ botId, token }: Pick<BotEntity, 'botId' | 'token'>): BotEntity {
+    const { entities: { BotEntity } } = this.di
+
+    const botEntity = new BotEntity()
+
+    botEntity.botId = botId
+    botEntity.token = token
+    botEntity.chats = []
+    botEntity.messages = []
+
+    return botEntity
+  }
+
+  private async launchBot (tgBot: TgBot): Promise<void> {
+    const subscriber = await createSubscriberToChatStatusUpdate(this.di, tgBot)
+
+    subscriber()
+
+    await tgBot.launch().catch(subscriber)
   }
 }
 

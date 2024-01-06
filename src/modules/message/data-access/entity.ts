@@ -5,20 +5,20 @@ import ChatEntity from '#modules/chat/data-access/entity.js'
 
 @Entity()
 class MessageEntity {
-  @PrimaryColumn('int')
-  id: number
+  @PrimaryColumn('text')
+    messageid: string
 
   @Column('text')
-  text: string
+    text: string
 
-  @Column('timestamp with time zone')
-  datetime: string
+  @Column('timestamptz')
+    datetime: string
 
   @ManyToOne(() => BotEntity, bot => bot.messages, { cascade: true })
-  bot: BotEntity
+    bot: BotEntity
 
   @ManyToOne(() => ChatEntity, chat => chat.messages, { cascade: true })
-  chat: ChatEntity
+    chat: ChatEntity
 }
 
 export default MessageEntity

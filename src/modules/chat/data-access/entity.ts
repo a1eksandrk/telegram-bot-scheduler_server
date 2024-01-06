@@ -1,24 +1,24 @@
-import { Entity, Column, OneToMany, ManyToMany, PrimaryColumn } from 'typeorm'
+import { Entity, Column, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm'
 
-import BotEntity from '#modules/bot-scheduler/data-access/entity.js'
 import MessageEntity from '#modules/message/data-access/entity.js'
+import BotEntity from '#modules/bot-scheduler/data-access/entity.js'
 
 @Entity()
 class ChatEntity {
-  @PrimaryColumn('int')
-  id: number
+  @PrimaryColumn('text')
+    chatId: string
 
   @Column('text')
-  name: string
+    name: string
 
   @Column('text', { nullable: true })
-  image: string | null
+    image: string | null
 
   @ManyToMany(() => BotEntity, bot => bot.chats)
-  bots: BotEntity[]
+    bots: BotEntity[]
 
   @OneToMany(() => MessageEntity, message => message.chat)
-  messages: MessageEntity[]
+    messages: MessageEntity[]
 }
 
 export default ChatEntity

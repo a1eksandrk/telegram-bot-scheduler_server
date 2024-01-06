@@ -4,10 +4,9 @@ import { Lifetime, asFunction, asValue } from 'awilix'
 import BotEntity from '#modules/bot-scheduler/data-access/entity.js'
 import ChatEntity from '#modules/chat/data-access/entity.js'
 import MessageEntity from '#modules/message/data-access/entity.js'
+import BotService from '#modules/bot-scheduler/domain/bot-service.js'
 
-import type { Cradle } from '@fastify/awilix'
-import type { DataSource } from 'typeorm'
-import type { Entities, Repositories } from '#shared/types.js'
+import type { Entities, Services, Repositories } from '#shared/types.js'
 
 const entities: Entities = {
   BotEntity,
@@ -15,13 +14,24 @@ const entities: Entities = {
   MessageEntity
 }
 
-const createRepositories = ({ db, entities }: Cradle): Repositories => ({
+const createServices = (cradle: DI): Services => ({
+  botService: new BotService(cradle)
+})
+
+const createRepositories = ({ db, entities }: DI): Repositories => ({
   botRepository: db.getRepository(entities.BotEntity),
   chatRepository: db.getRepository(entities.ChatEntity),
   messageRepository: db.getRepository(entities.MessageEntity)
 })
 
-const di = (db: DataSource): void => {
+const di = (db: DB): void => {
+  diContainer.register({
+    services: asFunction(
+      createServices,
+      { lifetime: Lifetime.SINGLETON }
+    )
+  })
+
   diContainer.register({
     repositories: asFunction(
       createRepositories,

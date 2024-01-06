@@ -1,32 +1,34 @@
-import { randomUUID } from 'node:crypto'
-
 import type { FastifyInstance, RouteShorthandOptions, RouteHandlerMethod } from 'fastify'
 
 type AddMessageBody = {
   text: string
   datetime: string
-  botId: number
-  chatId: number
+  botId: string
+  chatId: string
+}
+
+const messageSchema: JSONSchema = {
+  type: 'object',
+  properties: {
+    text: { type: 'string' },
+    datetime: { type: 'string', format: 'date-time' },
+    botId: { type: 'string' },
+    chatId: { type: 'string' }
+  }
 }
 
 export const addMessageOptions: RouteShorthandOptions = {
   schema: {
     body: {
-      type: 'object',
       required: ['text', 'datetime', 'botId', 'chatId'],
-      properties: {
-        text: { type: 'string' },
-        datetime: { type: 'string' },
-        botId: { type: 'number' },
-        chatId: { type: 'number' }
-      }
+      ...messageSchema
     },
     response: {
       201: {
+        type: 'object',
         properties: {
-          id: { type: 'number' },
-          text: { type: 'string' },
-          datetime: { type: 'string' }
+          messageId: { type: 'string' },
+          ...messageSchema.properties
         }
       }
     }
@@ -36,11 +38,30 @@ export const addMessageOptions: RouteShorthandOptions = {
 export const createAddMessageHandler = (_: FastifyInstance): RouteHandlerMethod => {
   return async (request, reply) => {
     const { text, datetime, botId, chatId } = request.body as AddMessageBody
+    const { MessageEntity } = request.diScope.cradle.entities
+    const { botRepository, chatRepository, messageRepository } = request.diScope.cradle.repositories
 
-    const id = Date.now()
+    const messageId = String(Date.now())
 
-    // request.diScope.cradle
+    const bot = await botRepository.findOneBy({ botId })
+    const chat = await chatRepository.findOneBy({ chatId })
 
-    reply.status(201).send({ id, text, datetime, botId, chatId })
+    if (!bot || !chat) return await reply.status(404).send()
+
+    try {
+      const messageEntity = new MessageEntity()
+
+      messageEntity.messageid = messageId
+      messageEntity.text = text
+      messageEntity.datetime = datetime
+      messageEntity.bot = bot
+      messageEntity.chat = chat
+
+      await messageRepository.save(messageEntity)
+    } catch (error) {
+      reply.status(500).send(error)
+    }
+
+    reply.status(201).send({ messageId, text, datetime, botId, chatId })
   }
 }

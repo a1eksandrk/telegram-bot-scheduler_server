@@ -2,11 +2,16 @@ import type { Repository } from 'typeorm'
 import type BotEntity from '#modules/bot-scheduler/data-access/entity.js'
 import type ChatEntity from '#modules/chat/data-access/entity.js'
 import type MessageEntity from '#modules/message/data-access/entity.js'
+import type BotService from '#modules/bot-scheduler/domain/bot-service.js'
+
+export type Services = {
+  botService: BotService
+}
 
 export type Entities = {
-  BotEntity: typeof BotEntity
-  ChatEntity: typeof ChatEntity
-  MessageEntity: typeof MessageEntity
+  BotEntity: new () => BotEntity
+  ChatEntity: new () => ChatEntity
+  MessageEntity: new () => MessageEntity
 }
 
 export type Repositories = {

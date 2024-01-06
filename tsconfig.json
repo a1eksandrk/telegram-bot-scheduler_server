@@ -8,6 +8,7 @@
     "baseUrl": ".",
     "rootDir": "src",
     "outDir": "dist",
+    "typeRoots": ["src/shared/declaration"],
     "paths": { "#*": ["src/*"] },
     "strict": true,
     "skipLibCheck": true,

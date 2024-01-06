@@ -5,18 +5,18 @@ import MessageEntity from '#modules/message/data-access/entity.js'
 
 @Entity()
 class BotEntity {
-  @PrimaryColumn('int')
-  botId: number
+  @PrimaryColumn('text')
+    botId: string
 
   @Column('text')
-  token: string
+    token: string
 
   @ManyToMany(() => ChatEntity, chat => chat.bots, { cascade: true })
   @JoinTable()
-  chats: ChatEntity[]
+    chats: ChatEntity[]
 
   @OneToMany(() => MessageEntity, message => message.bot)
-  messages: MessageEntity[]
+    messages: MessageEntity[]
 }
 
 export default BotEntity

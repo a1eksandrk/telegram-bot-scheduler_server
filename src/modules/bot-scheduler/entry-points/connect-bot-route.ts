@@ -1,4 +1,4 @@
-import BotService from '../domain/bot-service.js'
+import { TelegramError } from 'telegraf'
 
 import type { FastifyInstance, RouteHandlerMethod, RouteShorthandOptions } from 'fastify'
 
@@ -6,9 +6,10 @@ type ConnectBotBody = {
   token: string
 }
 
-const successResponseScheme = {
+const botScheme: JSONSchema = {
+  type: 'object',
   properties: {
-    id: { type: 'number' },
+    botId: { type: 'number' },
     token: { type: 'string' }
   }
 }
@@ -16,15 +17,12 @@ const successResponseScheme = {
 export const connectBotOptions: RouteShorthandOptions = {
   schema: {
     body: {
-      type: 'object',
       required: ['token'],
-      properties: {
-        token: { type: 'string' }
-      }
+      ...botScheme
     },
     response: {
-      201: successResponseScheme,
-      202: successResponseScheme
+      200: botScheme,
+      201: botScheme
     }
   }
 }
@@ -32,30 +30,24 @@ export const connectBotOptions: RouteShorthandOptions = {
 export const createConnectBotHandler = (_: FastifyInstance): RouteHandlerMethod => {
   return async (request, reply) => {
     const { token } = request.body as ConnectBotBody
-    const { BotEntity } = request.diScope.cradle.entities
-    const { botRepository } = request.diScope.cradle.repositories
-
-    const botService = new BotService(token)
+    const { botService } = request.diScope.cradle.services
 
     try {
-      const bot = await botService.getMe()
+      const savedBotTuple = await botService.authorize(token)
 
-      if (!bot) return await reply.status(404).send()
+      if (!savedBotTuple) return await reply.status(401).send()
 
-      const fondedBot = await botRepository.findOneBy({ token })
+      const [isSaved, savedBotEntity] = savedBotTuple
 
-      if (fondedBot) return await reply.status(204).send(fondedBot)
+      if (isSaved) return await reply.status(201).send(savedBotEntity)
 
-      const botEntity = new BotEntity()
-
-      botEntity.botId = bot.id
-      botEntity.token = bot.token
-
-      // await botRepository.save(botEntity)
-
-      reply.status(201).send(botEntity)
+      reply.status(200).send(savedBotEntity)
     } catch (error) {
-      reply.status(500).send()
+      if (error instanceof TelegramError) {
+        return await reply.status(error.code).send(error)
+      }
+
+      reply.status(500).send(error)
     }
   }
 }

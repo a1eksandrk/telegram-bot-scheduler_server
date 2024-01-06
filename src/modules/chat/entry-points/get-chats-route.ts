@@ -1,7 +1,9 @@
+import { buildWhereParams } from '#shared/lib/query.js'
+
 import type { FastifyInstance, RouteShorthandOptions, RouteHandlerMethod } from 'fastify'
 
 type GetChatsQuery = {
-  botId: number
+  botId: string | null
 }
 
 export const getChatsOptions: RouteShorthandOptions = {
@@ -9,8 +11,11 @@ export const getChatsOptions: RouteShorthandOptions = {
     querystring: {
       type: 'object',
       properties: {
-        botId: { type: 'number' }
+        botId: { type: ['string', 'null'], default: null }
       }
+    },
+    response: {
+      200: { type: 'array' }
     }
   }
 }
@@ -18,7 +23,15 @@ export const getChatsOptions: RouteShorthandOptions = {
 export const createGetChatsHandler = (_: FastifyInstance): RouteHandlerMethod => {
   return async (request, reply) => {
     const { botId } = request.query as GetChatsQuery
+    const { chatRepository } = request.diScope.cradle.repositories
 
-    reply.status(200).send(botId)
+    const botsAlias = 'bot'
+
+    const chats = await chatRepository.createQueryBuilder('chat')
+      .innerJoin('chat.bots', botsAlias)
+      .where(...buildWhereParams(botsAlias, 'botId', botId))
+      .getMany()
+
+    reply.status(200).send(chats)
   }
 }

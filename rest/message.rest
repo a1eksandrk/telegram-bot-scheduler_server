@@ -1,13 +1,13 @@
 ###
-GET http://127.0.0.1:5005/api/messages?botId=1&chatId=1
+GET http://127.0.0.1:5005/api/messages?botId=6217434479&chatId=259700535
 
 ###
 POST http://127.0.0.1:5005/api/message
 Content-Type: application/json
 
 {
-  "text": "",
-  "datetime": "",
-  "botId": 1,
-  "chatId": 1
+  "text": "test",
+  "datetime": "2022-01-05T15:30:00+00:00",
+  "botId": "6217434479",
+  "chatId": "259700535"
 }
