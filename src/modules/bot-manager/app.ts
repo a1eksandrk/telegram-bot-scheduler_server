@@ -5,12 +5,13 @@ import cors from '@fastify/cors'
 
 import env from '#shared/configs/env.js'
 
-import db from './db.js'
 import di from './di.js'
+
+import type { DataSource } from 'typeorm'
 
 const API_PREFIX = '/api'
 
-const init = async (): Promise<void> => {
+const init = async (db: DataSource): Promise<void> => {
   const { botController, chatController, messageController } = di(db).cradle
 
   const fastify = Fastify({ logger: true })
@@ -21,13 +22,7 @@ const init = async (): Promise<void> => {
   fastify.register(chatController.init, { prefix: API_PREFIX })
   fastify.register(messageController.init, { prefix: API_PREFIX })
 
-  try {
-    await db.initialize()
-    await fastify.listen({ host: env.HOST, port: env.PORT })
-  } catch (error) {
-    fastify.log.error(error)
-    process.exit(1)
-  }
+  await fastify.listen({ host: env.HOST, port: env.PORT })
 }
 
 export default { init }
