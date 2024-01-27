@@ -17,9 +17,11 @@ export const connectBotOptions: RouteShorthandOptions = {
 }
 
 class BotController implements Controller {
+  private readonly emitter: DI['emitter']
   private readonly botService: DI['botService']
 
-  public constructor ({ botService }: DI) {
+  public constructor ({ emitter, botService }: DI) {
+    this.emitter = emitter
     this.botService = botService
   }
 
@@ -36,9 +38,11 @@ class BotController implements Controller {
 
       const [isCreated, bot] = connectedBot
 
-      if (isCreated) return await reply.status(201).send(bot)
+      if (!isCreated) return await reply.status(200).send(bot)
 
-      reply.status(200).send(bot)
+      this.emitter.botConnected(bot.botId)
+
+      reply.status(201).send(bot)
     } catch (error) {
       reply.status(500).send(error)
     }

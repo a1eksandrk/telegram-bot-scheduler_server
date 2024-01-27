@@ -11,8 +11,8 @@ import type { DataSource } from 'typeorm'
 
 const API_PREFIX = '/api'
 
-const init = async (db: DataSource): Promise<void> => {
-  const { botController, chatController, messageController } = di(db).cradle
+const init = async (db: DataSource, emitter: Emitter): Promise<void> => {
+  const { botController, chatController, messageController } = di(db, emitter).cradle
 
   const fastify = Fastify({ logger: true })
 

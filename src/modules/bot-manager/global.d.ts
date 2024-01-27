@@ -32,5 +32,6 @@ declare global {
     messageRepository: MessageRepository
 
     db: DataSource
+    emitter: Emitter
   }
 }

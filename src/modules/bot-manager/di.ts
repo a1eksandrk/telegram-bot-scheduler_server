@@ -14,7 +14,7 @@ import MessageService from './domain/message.service.js'
 
 import type { DataSource } from 'typeorm'
 
-const di = (db: DataSource): awilix.AwilixContainer<DI> => {
+const di = (db: DataSource, emitter: Emitter): awilix.AwilixContainer<DI> => {
   const container = awilix.createContainer<DI>({ injectionMode: awilix.InjectionMode.PROXY })
 
   container.register({
@@ -30,7 +30,8 @@ const di = (db: DataSource): awilix.AwilixContainer<DI> => {
     chatService: awilix.asClass(ChatService).singleton(),
     messageService: awilix.asClass(MessageService).singleton(),
 
-    db: awilix.asValue(db)
+    db: awilix.asValue(db),
+    emitter: awilix.asValue(emitter)
   })
 
   return container
