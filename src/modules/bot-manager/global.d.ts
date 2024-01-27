@@ -1,13 +1,12 @@
-import type { DataSource } from 'typeorm'
 import type { FastifyInstance } from 'fastify'
 
-import type BotController from './entry-points/bot.controller.js'
-import type ChatController from './entry-points/chat.controller.js'
-import type MessageController from './entry-points/message.controller.js'
+import type BotController from './entry-points/bot.controller.ts'
+import type ChatController from './entry-points/chat.controller.ts'
+import type MessageController from './entry-points/message.controller.ts'
 
-import type BotRepository from './data-access/bot.repository.js'
-import type ChatRepository from './data-access/chat.repository.js'
-import type MessageRepository from './data-access/message.repository.js'
+import type BotRepository from './data-access/bot.repository.ts'
+import type ChatRepository from './data-access/chat.repository.ts'
+import type MessageRepository from './data-access/message.repository.ts'
 
 import type BotService from './domain/bot.service.ts'
 import type ChatService from './domain/chat.service.ts'
@@ -18,7 +17,7 @@ declare global {
     init: (fastify: FastifyInstance) => void
   }
 
-  type DI = {
+  interface DI {
     botController: BotController
     chatController: ChatController
     messageController: MessageController
@@ -30,8 +29,7 @@ declare global {
     botRepository: BotRepository
     chatRepository: ChatRepository
     messageRepository: MessageRepository
-
-    db: DataSource
-    emitter: Emitter
   }
 }
+
+export {}

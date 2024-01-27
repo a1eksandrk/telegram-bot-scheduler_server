@@ -1,5 +1,5 @@
-import type { DataSource } from 'typeorm'
+import type { AwilixContainer } from 'awilix'
 
-const init = async (db: DataSource): Promise<void> => {}
+const init = async (container: AwilixContainer<DI>): Promise<void> => {}
 
 export default { init }

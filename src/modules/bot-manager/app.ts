@@ -7,12 +7,12 @@ import env from '#shared/configs/env.js'
 
 import di from './di.js'
 
-import type { DataSource } from 'typeorm'
+import type { AwilixContainer } from 'awilix'
 
 const API_PREFIX = '/api'
 
-const init = async (db: DataSource, emitter: Emitter): Promise<void> => {
-  const { botController, chatController, messageController } = di(db, emitter).cradle
+const init = async (container: AwilixContainer<DI>): Promise<void> => {
+  const { botController, chatController, messageController } = di(container).cradle
 
   const fastify = Fastify({ logger: true })
 
