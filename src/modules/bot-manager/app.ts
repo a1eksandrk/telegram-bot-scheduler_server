@@ -18,9 +18,9 @@ const init = async (container: AwilixContainer<DI>): Promise<void> => {
 
   fastify.register(cors, { origin: env.ALLOWED_ORIGINS, methods: env.ALLOWED_METHODS })
 
-  fastify.register(botController.init, { prefix: API_PREFIX })
-  fastify.register(chatController.init, { prefix: API_PREFIX })
-  fastify.register(messageController.init, { prefix: API_PREFIX })
+  fastify.register(botController.register, { prefix: API_PREFIX })
+  fastify.register(chatController.register, { prefix: API_PREFIX })
+  fastify.register(messageController.register, { prefix: API_PREFIX })
 
   await fastify.listen({ host: env.HOST, port: env.PORT })
 }

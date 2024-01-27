@@ -11,7 +11,7 @@ class ChatRepository {
   private readonly db: DataSource
   private readonly repository: Repository<ChatEntity>
 
-  public constructor ({ db }: DI) {
+  public constructor ({ db }: BotManagerDI) {
     this.db = db
     this.repository = this.db.getRepository(ChatEntity)
   }

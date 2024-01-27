@@ -33,13 +33,13 @@ const getMessagesRouteOptions: RouteShorthandOptions = {
 }
 
 class MessageController implements Controller {
-  private readonly messageService: DI['messageService']
+  private readonly messageService: BotManagerDI['messageService']
 
-  public constructor ({ messageService }: DI) {
+  public constructor ({ messageService }: BotManagerDI) {
     this.messageService = messageService
   }
 
-  public init = async (fastify: FastifyInstance): Promise<void> => {
+  public register = async (fastify: FastifyInstance): Promise<void> => {
     fastify.get('/messages', getMessagesRouteOptions, this.handleGetMessages)
     fastify.post('/message', addMessageOptions, this.handleAddMessageRoute)
   }

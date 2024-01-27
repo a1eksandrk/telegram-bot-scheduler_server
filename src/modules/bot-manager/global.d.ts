@@ -13,11 +13,11 @@ import type ChatService from './domain/chat.service.ts'
 import type MessageService from './domain/message.service.ts'
 
 declare global {
-  type Controller = {
-    init: (fastify: FastifyInstance) => void
+  type BotManagerController = {
+    register: (fastify: FastifyInstance) => Promise<void>
   }
 
-  interface DI {
+  type BotManagerDI = DI & {
     botController: BotController
     chatController: ChatController
     messageController: MessageController

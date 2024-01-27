@@ -29,13 +29,13 @@ const getChatsRouteOptions: RouteShorthandOptions = {
 }
 
 class ChatController implements Controller {
-  private readonly chatService: DI['chatService']
+  private readonly chatService: BotManagerDI['chatService']
 
-  public constructor ({ chatService }: DI) {
+  public constructor ({ chatService }: BotManagerDI) {
     this.chatService = chatService
   }
 
-  public init = async (fastify: FastifyInstance): Promise<void> => {
+  public register = async (fastify: FastifyInstance): Promise<void> => {
     fastify.get('/chats', getChatRouteOptions, this.handleGetChatRoute)
     fastify.get('/chat/:chatId', getChatsRouteOptions, this.handleGetChatsRoute)
   }

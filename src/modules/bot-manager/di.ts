@@ -14,8 +14,10 @@ import MessageService from './domain/message.service.js'
 
 import type { AwilixContainer } from 'awilix'
 
-const di = (container: AwilixContainer<DI>): AwilixContainer<DI> => {
-  container.register({
+const di = (container: AwilixContainer<DI>): AwilixContainer<BotManagerDI> => {
+  const moduleContainer = container as AwilixContainer<BotManagerDI>
+
+  return moduleContainer.register({
     botController: awilix.asClass(BotController).singleton(),
     chatController: awilix.asClass(ChatController).singleton(),
     messageController: awilix.asClass(MessageController).singleton(),
@@ -28,8 +30,6 @@ const di = (container: AwilixContainer<DI>): AwilixContainer<DI> => {
     chatService: awilix.asClass(ChatService).singleton(),
     messageService: awilix.asClass(MessageService).singleton()
   })
-
-  return container
 }
 
 export default di

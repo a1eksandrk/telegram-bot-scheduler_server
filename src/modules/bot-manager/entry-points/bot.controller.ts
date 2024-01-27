@@ -16,16 +16,16 @@ export const connectBotOptions: RouteShorthandOptions = {
   }
 }
 
-class BotController implements Controller {
-  private readonly emitter: DI['emitter']
-  private readonly botService: DI['botService']
+class BotController implements BotManagerController {
+  private readonly emitter: BotManagerDI['emitter']
+  private readonly botService: BotManagerDI['botService']
 
-  public constructor ({ emitter, botService }: DI) {
+  public constructor ({ emitter, botService }: BotManagerDI) {
     this.emitter = emitter
     this.botService = botService
   }
 
-  public init = async (fastify: FastifyInstance): Promise<void> => {
+  public register = async (fastify: FastifyInstance): Promise<void> => {
     fastify.put('/bot/connect', connectBotOptions, this.handleConnectBotRoute)
   }
 

@@ -5,9 +5,9 @@ type GetChatsFilter = {
 }
 
 class ChatService {
-  private readonly chatRepository: DI['chatRepository']
+  private readonly chatRepository: BotManagerDI['chatRepository']
 
-  public constructor ({ chatRepository }: DI) {
+  public constructor ({ chatRepository }: BotManagerDI) {
     this.chatRepository = chatRepository
   }
 

@@ -16,9 +16,9 @@ type BotInfo = {
 }
 
 class BotService {
-  private readonly botRepository: DI['botRepository']
+  private readonly botRepository: BotManagerDI['botRepository']
 
-  public constructor ({ botRepository }: DI) {
+  public constructor ({ botRepository }: BotManagerDI) {
     this.botRepository = botRepository
   }
 

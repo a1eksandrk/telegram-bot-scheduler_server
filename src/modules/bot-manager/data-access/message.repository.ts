@@ -12,7 +12,7 @@ class MessageRepository {
   private readonly db: DataSource
   private readonly repository: Repository<MessageEntity>
 
-  public constructor ({ db }: DI) {
+  public constructor ({ db }: BotManagerDI) {
     this.db = db
     this.repository = this.db.getRepository(MessageEntity)
   }

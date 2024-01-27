@@ -17,11 +17,11 @@ type GetMessagesFilter = {
 }
 
 class MessageService {
-  private readonly botRepository: DI['botRepository']
-  private readonly chatRepository: DI['chatRepository']
-  private readonly messageRepository: DI['messageRepository']
+  private readonly botRepository: BotManagerDI['botRepository']
+  private readonly chatRepository: BotManagerDI['chatRepository']
+  private readonly messageRepository: BotManagerDI['messageRepository']
 
-  public constructor ({ botRepository, chatRepository, messageRepository }: DI) {
+  public constructor ({ botRepository, chatRepository, messageRepository }: BotManagerDI) {
     this.botRepository = botRepository
     this.chatRepository = chatRepository
     this.messageRepository = messageRepository
