@@ -16,9 +16,11 @@ type BotInfo = {
 }
 
 class BotService {
+  private readonly emitter: BotManagerDI['emitter']
   private readonly botRepository: BotManagerDI['botRepository']
 
-  public constructor ({ botRepository }: BotManagerDI) {
+  public constructor ({ emitter, botRepository }: BotManagerDI) {
+    this.emitter = emitter
     this.botRepository = botRepository
   }
 
@@ -37,6 +39,8 @@ class BotService {
 
       const botEntity = await this.createBotEntity({ botId, token })
       const savedBotEntity = await this.botRepository.save(botEntity)
+
+      this.emitter.botConnected(savedBotEntity)
 
       return [true, new BotDTO(savedBotEntity)]
     } catch (error) {
