@@ -20,7 +20,7 @@ class ChatService {
   }
 
   public async getChats (filter: GetChatsFilter): Promise<ChatDTO[]> {
-    const chats = await this.chatRepository.findMany(filter)
+    const chats = await this.chatRepository.find(filter)
 
     if (!chats.length) return []
 

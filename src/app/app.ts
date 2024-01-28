@@ -9,25 +9,20 @@ import botManagerApp from '#modules/bot-manager/app.js'
 import botObserverApp from '#modules/bot-observer/app.js'
 import messageSchedulerApp from '#modules/message-scheduler/app.js'
 
-import type { AwilixContainer } from 'awilix'
-
 const emitter = new BotConnectEmitter(new EventEmitter())
+const container = awilix.createContainer<DI>({ injectionMode: awilix.InjectionMode.PROXY })
 
-const initializeContainer = (): AwilixContainer<DI> => {
-  const container = awilix.createContainer<DI>({ injectionMode: awilix.InjectionMode.PROXY })
-
-  return container.register({
-    db: awilix.asValue(db),
-    emitter: awilix.asValue(emitter)
-  })
-}
+container.register({
+  db: awilix.asValue(db),
+  emitter: awilix.asValue(emitter)
+})
 
 try {
   await db.initialize()
 
-  await botManagerApp.init(initializeContainer())
-  await botObserverApp.init(initializeContainer())
-  await messageSchedulerApp.init(initializeContainer())
+  await botManagerApp.init(container)
+  await botObserverApp.init(container)
+  await messageSchedulerApp.init(container)
 } catch (error) {
   // eslint-disable-next-line no-console
   console.error(error)

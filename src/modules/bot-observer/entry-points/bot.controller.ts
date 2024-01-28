@@ -7,7 +7,11 @@ class BotController implements Controller {
     this.botService = botService
   }
 
-  public register = async (): Promise<void> => {}
+  public async register (): Promise<void> {
+    await this.botService.init()
+
+    this.emitter.onBotConnected(this.botService.handleBotConnected)
+  }
 }
 
 export default BotController

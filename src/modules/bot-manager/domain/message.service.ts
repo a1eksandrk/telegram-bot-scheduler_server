@@ -38,7 +38,7 @@ class MessageService {
   }
 
   public async getMessages (filter: GetMessagesFilter): Promise<MessageDTO[]> {
-    const messages = await this.messageRepository.findMany(filter)
+    const messages = await this.messageRepository.find(filter)
 
     if (!messages.length) return []
 

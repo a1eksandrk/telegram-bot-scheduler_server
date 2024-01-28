@@ -3,7 +3,7 @@ import { buildWhereParams } from '#shared/libs/query.js'
 
 import type { DataSource, Repository } from 'typeorm'
 
-type FindManyFilter = {
+type FindFilter = {
   botId: string | null
 }
 
@@ -20,7 +20,7 @@ class ChatRepository {
     return await this.repository.findOneBy({ chatId })
   }
 
-  public async findMany ({ botId }: FindManyFilter): Promise<ChatEntity[]> {
+  public async find ({ botId }: FindFilter): Promise<ChatEntity[]> {
     const botsAlias = 'bot'
 
     return await this.repository.createQueryBuilder('chat')

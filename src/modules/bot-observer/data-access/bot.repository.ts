@@ -10,6 +10,10 @@ class BotRepository {
     this.db = db
     this.repository = this.db.getRepository(BotEntity)
   }
+
+  public async find (): Promise<BotEntity[]> {
+    return await this.repository.find()
+  }
 }
 
 export default BotRepository

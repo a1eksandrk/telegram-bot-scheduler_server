@@ -3,7 +3,7 @@ import { buildWhereParams } from '#shared/libs/query.js'
 
 import type { DataSource, Repository } from 'typeorm'
 
-type FindManyFilter = {
+type FindFilter = {
   botId: string | null
   chatId: string | null
 }
@@ -17,7 +17,7 @@ class MessageRepository {
     this.repository = this.db.getRepository(MessageEntity)
   }
 
-  public async findMany ({ botId, chatId }: FindManyFilter): Promise<MessageEntity[]> {
+  public async find ({ botId, chatId }: FindFilter): Promise<MessageEntity[]> {
     const botAlias = 'bot'
     const chatAlias = 'chat'
 

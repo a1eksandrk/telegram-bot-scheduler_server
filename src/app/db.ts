@@ -20,7 +20,7 @@ const db = new DataSource({
   username: env.DB_USERNAME,
   password: env.DB_PASSWORD,
   entities,
-  logging: true,
+  logging: false,
   synchronize: true
 })
 
