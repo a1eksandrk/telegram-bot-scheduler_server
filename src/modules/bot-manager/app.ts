@@ -14,7 +14,7 @@ const API_PREFIX = '/api'
 const init = async (container: AwilixContainer<DI>): Promise<void> => {
   const { botController, chatController, messageController } = di(container).cradle
 
-  const fastify = Fastify({ logger: false })
+  const fastify = Fastify({ logger: true })
 
   fastify.register(cors, { origin: env.ALLOWED_ORIGINS, methods: env.ALLOWED_METHODS })
 

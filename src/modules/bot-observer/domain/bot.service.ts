@@ -1,4 +1,3 @@
-import BotDTO from './bot.dto.js'
 import ObserverService from './observer.service.js'
 
 import type BotEntity from '#shared/entities/bot.entity.js'
@@ -14,15 +13,13 @@ class BotService {
 
   public async init (): Promise<void> {
     const botEntities = await this.botRepository.find()
-    const bots = botEntities.map(entity => new BotDTO(entity))
-    const observers = bots.map(bot => new ObserverService(bot, this.chatRepository))
+    const observers = botEntities.map(entity => new ObserverService(entity, this.chatRepository))
 
     await this.watch(observers)
   }
 
   public handleBotConnected = (botEntity: BotEntity): void => {
-    const bot = new BotDTO(botEntity)
-    const observerService = new ObserverService(bot, this.chatRepository)
+    const observerService = new ObserverService(botEntity, this.chatRepository)
 
     observerService.watch()
   }

@@ -28,7 +28,7 @@ const getChatsRouteOptions: RouteShorthandOptions = {
   }
 }
 
-class ChatController implements Controller {
+class ChatController implements BotManagerController {
   private readonly chatService: BotManagerDI['chatService']
 
   public constructor ({ chatService }: BotManagerDI) {

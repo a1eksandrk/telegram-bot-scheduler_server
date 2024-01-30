@@ -3,6 +3,7 @@ import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 
 import env from '#shared/configs/env.js'
+import { PinoTypeOrmLogger } from '#shared/libs/log.js'
 
 import BotEntity from '#shared/entities/bot.entity.js'
 import ChatEntity from '#shared/entities/chat.entity.js'
@@ -20,7 +21,8 @@ const db = new DataSource({
   username: env.DB_USERNAME,
   password: env.DB_PASSWORD,
   entities,
-  logging: false,
+  logging: true,
+  logger: new PinoTypeOrmLogger(),
   synchronize: true
 })
 

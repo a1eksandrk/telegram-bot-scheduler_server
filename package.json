@@ -11,8 +11,8 @@
     "#*": "./dist/*"
   },
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts | pino-pretty",
+    "start": "node dist/index.js | pino-pretty",
     "build": "tsc",
     "lint": "eslint --ext .js,.ts src/",
     "lint:fix": "eslint --ext .js,.ts src/ --fix"
@@ -36,8 +36,11 @@
     "fastify": "^4.25.2",
     "node-cron": "^3.0.3",
     "pg": "^8.11.3",
+    "pino": "^8.17.2",
+    "pino-pretty": "^10.3.1",
     "puregram": "^2.25.0",
     "reflect-metadata": "^0.2.1",
+    "sql-formatter": "^15.2.0",
     "typeorm": "^0.3.17"
   }
 }

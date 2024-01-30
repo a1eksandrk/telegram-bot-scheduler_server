@@ -32,7 +32,7 @@ const getMessagesRouteOptions: RouteShorthandOptions = {
   }
 }
 
-class MessageController implements Controller {
+class MessageController implements BotManagerController {
   private readonly messageService: BotManagerDI['messageService']
 
   public constructor ({ messageService }: BotManagerDI) {

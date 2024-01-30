@@ -1,4 +1,4 @@
-import { Entity, Column, JoinTable, OneToMany, ManyToMany, PrimaryColumn } from 'typeorm'
+import { Entity, Column, OneToMany, ManyToMany, PrimaryColumn, Relation } from 'typeorm'
 
 import ChatEntity from '#shared/entities/chat.entity.js'
 import MessageEntity from '#shared/entities/message.entity.js'
@@ -11,12 +11,11 @@ class BotEntity {
   @Column('text')
     token: string
 
-  @ManyToMany(() => ChatEntity, chat => chat.bots, { cascade: true })
-  @JoinTable()
-    chats: ChatEntity[]
+  @ManyToMany(() => ChatEntity, chat => chat.bots)
+    chats: Relation<ChatEntity[]>
 
   @OneToMany(() => MessageEntity, message => message.bot)
-    messages: MessageEntity[]
+    messages: Relation<MessageEntity[]>
 }
 
 export default BotEntity

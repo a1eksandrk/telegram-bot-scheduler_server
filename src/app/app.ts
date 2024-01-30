@@ -9,6 +9,8 @@ import botManagerApp from '#modules/bot-manager/app.js'
 import botObserverApp from '#modules/bot-observer/app.js'
 import messageSchedulerApp from '#modules/message-scheduler/app.js'
 
+import { logger } from '#shared/libs/log.js'
+
 const emitter = new BotConnectEmitter(new EventEmitter())
 const container = awilix.createContainer<DI>({ injectionMode: awilix.InjectionMode.PROXY })
 
@@ -24,7 +26,6 @@ try {
   await botObserverApp.init(container)
   await messageSchedulerApp.init(container)
 } catch (error) {
-  // eslint-disable-next-line no-console
-  console.error(error)
+  logger.error(error)
   process.exit(1)
 }
