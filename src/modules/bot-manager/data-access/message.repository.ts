@@ -32,6 +32,14 @@ class MessageRepository {
   public async save (messageEntity: MessageEntity): Promise<MessageEntity> {
     return await this.repository.save(messageEntity)
   }
+
+  public async remove (messageId: string): Promise<MessageEntity | null> {
+    const foundMessage = await this.repository.findOneBy({ messageId })
+
+    if (!foundMessage) return null
+
+    return await this.repository.remove(foundMessage)
+  }
 }
 
 export default MessageRepository
