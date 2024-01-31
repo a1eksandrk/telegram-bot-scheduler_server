@@ -51,6 +51,8 @@ class ObserverService {
     const chatEntity = await this.createOrUpdateChatEntity(chat, foundEntity)
 
     await this.chatRepository.save(chatEntity)
+
+    logger.info(chat, `chat saved ${chatEntity.chatId}`)
   }
 
   private async createOrUpdateChatEntity (chat: TelegramChat, foundEntity: ChatEntity | null): Promise<ChatEntity> {
@@ -83,6 +85,7 @@ class ObserverService {
 
   private async proccessExpulsion (chat: TelegramChat): Promise<void> {
     await this.chatRepository.removeById(String(chat.id))
+    logger.info(chat, `chat removed ${chat.id}`)
   }
 }
 

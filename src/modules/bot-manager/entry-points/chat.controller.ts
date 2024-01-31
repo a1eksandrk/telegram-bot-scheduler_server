@@ -36,8 +36,8 @@ class ChatController implements BotManagerController {
   }
 
   public register = async (fastify: FastifyInstance): Promise<void> => {
-    fastify.get('/chats', getChatRouteOptions, this.handleGetChatRoute)
-    fastify.get('/chat/:chatId', getChatsRouteOptions, this.handleGetChatsRoute)
+    fastify.get('/chat/:chatId', getChatRouteOptions, this.handleGetChatRoute)
+    fastify.get('/chats', getChatsRouteOptions, this.handleGetChatsRoute)
   }
 
   private readonly handleGetChatRoute: RouteHandlerMethod = async (request, reply) => {
