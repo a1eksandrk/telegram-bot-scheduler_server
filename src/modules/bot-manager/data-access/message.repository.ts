@@ -33,7 +33,7 @@ class MessageRepository {
     return await this.repository.save(messageEntity)
   }
 
-  public async remove (messageId: string): Promise<MessageEntity | null> {
+  public async removeOneById (messageId: string): Promise<MessageEntity | null> {
     const foundMessage = await this.repository.findOneBy({ messageId })
 
     if (!foundMessage) return null

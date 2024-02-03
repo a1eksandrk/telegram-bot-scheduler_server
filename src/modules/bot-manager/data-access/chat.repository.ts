@@ -20,6 +20,14 @@ class ChatRepository {
     return await this.repository.findOneBy({ chatId })
   }
 
+  public async removeOneById (chatId: string): Promise<ChatEntity | null> {
+    const foundEntity = await this.findOneById(chatId)
+
+    if (!foundEntity) return null
+
+    return await this.repository.remove(foundEntity)
+  }
+
   public async find ({ botId }: FindFilter): Promise<ChatEntity[]> {
     const botsAlias = 'bot'
 

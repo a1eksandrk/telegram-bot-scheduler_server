@@ -1,6 +1,11 @@
-import { messageSchema, bodySchema, querystringScheme } from './message.schema.js'
+import { messageSchema, bodySchema, paramsSchema, querystringScheme } from './message.schema.js'
 
 import type { FastifyInstance, RouteHandlerMethod, RouteShorthandOptions } from 'fastify'
+
+type GetMessagesQuery = {
+  botId: string | null
+  chatId: string | null
+}
 
 type AddMessageBody = {
   text: string
@@ -9,9 +14,8 @@ type AddMessageBody = {
   chatId: string
 }
 
-type GetMessagesQuery = {
-  botId: string | null
-  chatId: string | null
+type DeleteMessageParams = {
+  messageId: string
 }
 
 const addMessageOptions: RouteShorthandOptions = {
@@ -32,6 +36,15 @@ const getMessagesRouteOptions: RouteShorthandOptions = {
   }
 }
 
+const deleteMessageOptions: RouteShorthandOptions = {
+  schema: {
+    params: paramsSchema,
+    response: {
+      200: messageSchema
+    }
+  }
+}
+
 class MessageController implements BotManagerController {
   private readonly messageService: BotManagerDI['messageService']
 
@@ -40,11 +53,12 @@ class MessageController implements BotManagerController {
   }
 
   public register = async (fastify: FastifyInstance): Promise<void> => {
-    fastify.get('/messages', getMessagesRouteOptions, this.handleGetMessages)
+    fastify.get('/messages', getMessagesRouteOptions, this.handleGetMessagesRoute)
     fastify.post('/message', addMessageOptions, this.handleAddMessageRoute)
+    fastify.delete('/message/:messageId', deleteMessageOptions, this.handleDeleteMessageRoute)
   }
 
-  private readonly handleGetMessages: RouteHandlerMethod = async (request, reply) => {
+  private readonly handleGetMessagesRoute: RouteHandlerMethod = async (request, reply) => {
     try {
       const query = request.query as GetMessagesQuery
       const messages = await this.messageService.getMessages(query)
@@ -63,6 +77,19 @@ class MessageController implements BotManagerController {
       if (!addedMessage) return await reply.status(404).send()
 
       reply.status(201).send(addedMessage)
+    } catch (error) {
+      reply.status(500).send(error)
+    }
+  }
+
+  private readonly handleDeleteMessageRoute: RouteHandlerMethod = async (request, reply) => {
+    try {
+      const { messageId } = request.params as DeleteMessageParams
+      const messages = await this.messageService.removeMessage(messageId)
+
+      if (!messages) return await reply.status(404).send()
+
+      reply.status(200).send(messages)
     } catch (error) {
       reply.status(500).send(error)
     }

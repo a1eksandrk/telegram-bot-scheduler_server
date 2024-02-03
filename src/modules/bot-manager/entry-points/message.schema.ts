@@ -27,3 +27,11 @@ export const querystringScheme: JSONSchema7 = {
     chatId: { type: ['string', 'null'], default: null }
   }
 }
+
+export const paramsSchema: JSONSchema7 = {
+  type: 'object',
+  required: ['messageId'],
+  properties: {
+    messageId: { type: 'string' }
+  }
+}

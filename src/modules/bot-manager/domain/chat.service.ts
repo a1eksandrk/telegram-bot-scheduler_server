@@ -11,8 +11,16 @@ class ChatService {
     this.chatRepository = chatRepository
   }
 
-  public async getChatById (chatId: string): Promise<ChatDTO | null> {
+  public async getChat (chatId: string): Promise<ChatDTO | null> {
     const chatEntity = await this.chatRepository.findOneById(chatId)
+
+    if (!chatEntity) return null
+
+    return new ChatDTO(chatEntity)
+  }
+
+  public async removeChat (chatId: string): Promise<ChatDTO | null> {
+    const chatEntity = await this.chatRepository.removeOneById(chatId)
 
     if (!chatEntity) return null
 

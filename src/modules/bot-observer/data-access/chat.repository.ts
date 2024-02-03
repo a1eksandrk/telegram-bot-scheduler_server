@@ -15,16 +15,16 @@ class ChatRepository {
     return await this.repository.save(chatEntity)
   }
 
-  public async removeById (chatId: string): Promise<ChatEntity | null> {
+  public async findOneById (chatId: string): Promise<ChatEntity | null> {
+    return await this.repository.findOneBy({ chatId })
+  }
+
+  public async removeOneById (chatId: string): Promise<ChatEntity | null> {
     const foundEntity = await this.findOneById(chatId)
 
     if (!foundEntity) return null
 
     return await this.repository.remove(foundEntity)
-  }
-
-  public async findOneById (chatId: string): Promise<ChatEntity | null> {
-    return await this.repository.findOneBy({ chatId })
   }
 }
 

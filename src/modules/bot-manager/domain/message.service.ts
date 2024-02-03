@@ -37,6 +37,14 @@ class MessageService {
     return new MessageDTO(savedMessage)
   }
 
+  public async removeMessage (messageId: string): Promise<MessageDTO | null> {
+    const messageEntity = await this.messageRepository.removeOneById(messageId)
+
+    if (!messageEntity) return null
+
+    return new MessageDTO(messageEntity)
+  }
+
   public async getMessages (filter: GetMessagesFilter): Promise<MessageDTO[]> {
     const messages = await this.messageRepository.find(filter)
 

@@ -84,7 +84,7 @@ class ObserverService {
   }
 
   private async proccessExpulsion (chat: TelegramChat): Promise<void> {
-    await this.chatRepository.removeById(String(chat.id))
+    await this.chatRepository.removeOneById(String(chat.id))
     logger.info(chat, `chat removed ${chat.id}`)
   }
 }
