@@ -4,9 +4,9 @@ import MessageEntity from '#shared/entities/message.entity.js'
 
 import MessageDTO from './message.dto.js'
 
-type Message = {
+export type Message = {
   text: string
-  timestamp: string
+  timestamp: Date
   botId: string
   chatId: string
 }

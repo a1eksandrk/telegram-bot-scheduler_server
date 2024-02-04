@@ -4,7 +4,7 @@ import BotEntity from '#shared/entities/bot.entity.js'
 import ChatEntity from '#shared/entities/chat.entity.js'
 
 @Entity()
-class MessageEntity {
+class ArchivedMessageEntity {
   @PrimaryColumn('text')
     messageId: string
 
@@ -21,4 +21,4 @@ class MessageEntity {
     chat: Relation<ChatEntity>
 }
 
-export default MessageEntity
+export default ArchivedMessageEntity

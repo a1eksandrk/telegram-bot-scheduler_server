@@ -1,5 +1,6 @@
 import { messageSchema, bodySchema, paramsSchema, querystringScheme } from './message.schema.js'
 
+import type { Message } from '../domain/message.service.js'
 import type { FastifyInstance, RouteHandlerMethod, RouteShorthandOptions } from 'fastify'
 
 type GetMessagesQuery = {
@@ -72,7 +73,12 @@ class MessageController implements BotManagerController {
   private readonly handleAddMessageRoute: RouteHandlerMethod = async (request, reply) => {
     try {
       const body = request.body as AddMessageBody
-      const addedMessage = await this.messageService.addMessage(body)
+      const timestamp = new Date(body.timestamp)
+
+      if (isNaN(Number(timestamp))) return await reply.status(400).send()
+
+      const message: Message = { ...body, timestamp }
+      const addedMessage = await this.messageService.addMessage(message)
 
       if (!addedMessage) return await reply.status(404).send()
 

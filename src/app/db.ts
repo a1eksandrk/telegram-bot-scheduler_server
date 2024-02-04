@@ -8,10 +8,11 @@ import { PinoTypeOrmLogger } from '#shared/libs/log.js'
 import BotEntity from '#shared/entities/bot.entity.js'
 import ChatEntity from '#shared/entities/chat.entity.js'
 import MessageEntity from '#shared/entities/message.entity.js'
+import ArchivedMessageEntity from '#shared/entities/archived-message.entity.js'
 
 const DB_TYPE = 'postgres'
 
-const entities = [BotEntity, ChatEntity, MessageEntity]
+const entities = [BotEntity, ChatEntity, MessageEntity, ArchivedMessageEntity]
 
 const db = new DataSource({
   type: DB_TYPE,

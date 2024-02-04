@@ -22,10 +22,8 @@ class MessageRepository {
     const chatAlias = 'chat'
 
     return await this.repository.createQueryBuilder('messsage')
-      .innerJoin('messsage.bot', botAlias)
-      .where(...buildWhereParams(botAlias, 'botId', botId))
-      .innerJoin('messsage.chat', chatAlias)
-      .where(...buildWhereParams(chatAlias, 'chatId', chatId))
+      .innerJoinAndSelect('messsage.bot', botAlias, ...buildWhereParams(botAlias, 'botId', botId))
+      .innerJoinAndSelect('messsage.chat', chatAlias, ...buildWhereParams(chatAlias, 'chatId', chatId))
       .getMany()
   }
 
