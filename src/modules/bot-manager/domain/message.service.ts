@@ -1,5 +1,3 @@
-import { randomUUID } from 'node:crypto'
-
 import MessageEntity from '#shared/entities/message.entity.js'
 
 import MessageDTO from './message.dto.js'
@@ -61,7 +59,6 @@ class MessageService {
 
     const messageEntity = new MessageEntity()
 
-    messageEntity.messageId = randomUUID()
     messageEntity.text = text
     messageEntity.timestamp = timestamp
     messageEntity.bot = bot

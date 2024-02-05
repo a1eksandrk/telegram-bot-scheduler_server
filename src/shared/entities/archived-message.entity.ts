@@ -1,11 +1,11 @@
-import { Entity, Column, ManyToOne, PrimaryColumn, Relation } from 'typeorm'
-
-import BotEntity from '#shared/entities/bot.entity.js'
-import ChatEntity from '#shared/entities/chat.entity.js'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 class ArchivedMessageEntity {
-  @PrimaryColumn('text')
+  @PrimaryGeneratedColumn('uuid')
+    archivedMessageId: string
+
+  @Column('uuid')
     messageId: string
 
   @Column('text')
@@ -14,11 +14,11 @@ class ArchivedMessageEntity {
   @Column('timestamptz')
     timestamp: Date
 
-  @ManyToOne(() => BotEntity, bot => bot.messages, { cascade: true })
-    bot: Relation<BotEntity>
+  @Column('text')
+    botId: string
 
-  @ManyToOne(() => ChatEntity, chat => chat.messages, { cascade: true })
-    chat: Relation<ChatEntity>
+  @Column('text')
+    chatId: string
 }
 
 export default ArchivedMessageEntity

@@ -1,6 +1,10 @@
 import { logger } from '#shared/libs/log.js'
 
-import { convertToInterval, extractMessages, archiveMessages, findBot, send } from './lib.js'
+import { convertToInterval, send } from './lib.js'
+
+import BotRepository from '../data-access/bot.repository.js'
+import MessageRepository from '../data-access/message.repository.js'
+import ArchivedMessageRepository from '../data-access/archived-message.repository.js'
 
 import type { DataSource } from 'typeorm'
 
@@ -19,20 +23,24 @@ class MessageService {
     await qr.connect()
     await qr.startTransaction()
 
+    const botRepository = new BotRepository(qr.manager)
+    const messageRepository = new MessageRepository(qr.manager)
+    const archivedMessageRepository = new ArchivedMessageRepository(qr.manager)
+
     try {
-      const extractedMessages = await extractMessages(qr, interval)
+      const messages = await messageRepository.findByInterval(interval)
 
-      if (!extractedMessages) { await qr.rollbackTransaction(); return }
+      if (!messages.length) { await qr.rollbackTransaction(); return }
 
-      const archivedMessages = await archiveMessages(qr, extractedMessages)
+      const archivedMessages = await archivedMessageRepository.saveMany(messages)
 
-      if (!archivedMessages) { await qr.rollbackTransaction(); return }
+      if (!archivedMessages.length) { await qr.rollbackTransaction(); return }
 
       let sendedCount = 0
 
-      for (const message of archivedMessages) {
+      for (const message of messages) {
         try {
-          const bot = await findBot(qr, message.bot.botId)
+          const bot = await botRepository.findById(message.bot.botId)
 
           if (!bot) continue
 
@@ -47,6 +55,8 @@ class MessageService {
       }
 
       logger.info(archivedMessages, `The number of messages sent - ${sendedCount}`)
+
+      await messageRepository.removeMany(messages)
 
       await qr.commitTransaction()
     } catch (error) {

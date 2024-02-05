@@ -11,10 +11,10 @@ class BotEntity {
   @Column('text')
     token: string
 
-  @ManyToMany(() => ChatEntity, chat => chat.bots)
+  @ManyToMany(() => ChatEntity, chat => chat.bots, { onDelete: 'CASCADE' })
     chats: Relation<ChatEntity[]>
 
-  @OneToMany(() => MessageEntity, message => message.bot)
+  @OneToMany(() => MessageEntity, message => message.bot, { onDelete: 'CASCADE' })
     messages: Relation<MessageEntity[]>
 }
 

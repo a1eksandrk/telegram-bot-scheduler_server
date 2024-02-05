@@ -18,7 +18,7 @@ class ChatEntity {
   @JoinTable()
     bots: Relation<BotEntity[]>
 
-  @OneToMany(() => MessageEntity, message => message.chat)
+  @OneToMany(() => MessageEntity, message => message.chat, { onDelete: 'CASCADE' })
     messages: Relation<MessageEntity[]>
 }
 
