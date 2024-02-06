@@ -20,9 +20,9 @@ export type MessageError = {
   description: string
 }
 
-export const convertToInterval = (timestamp: Date): Interval => {
-  const before = new Date(timestamp.getTime() - 30 * 1000)
-  const after = new Date(timestamp.getTime() + 30 * 1000)
+export const convertToInterval = (timestamp: Date, increaseMs = 30 * 1000): Interval => {
+  const before = new Date(timestamp.getTime() - increaseMs)
+  const after = new Date(timestamp.getTime() + increaseMs)
 
   return { before, after }
 }

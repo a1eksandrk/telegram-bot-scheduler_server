@@ -17,7 +17,11 @@ class MessageRepository {
   }
 
   public async findByInterval ({ before, after }: FindInterval): Promise<MessageEntity[]> {
-    return await this.repository.find({ relations: ['bot', 'chat'], where: { timestamp: Between(before, after) } })
+    return await this.repository.find({
+      relations: ['bot', 'chat'],
+      order: { timestamp: 'ASC' },
+      where: { timestamp: Between(before, after) }
+    })
   }
 
   public async removeMany (messageEntities: MessageEntity[]): Promise<MessageEntity[]> {

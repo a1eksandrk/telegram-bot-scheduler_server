@@ -14,10 +14,10 @@ class MessageEntity {
   @Column('timestamptz')
     timestamp: Date
 
-  @ManyToOne(() => BotEntity, bot => bot.messages, { cascade: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => BotEntity, bot => bot.messages, { cascade: true })
     bot: Relation<BotEntity>
 
-  @ManyToOne(() => ChatEntity, chat => chat.messages, { cascade: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => ChatEntity, chat => chat.messages, { cascade: true })
     chat: Relation<ChatEntity>
 }
 
