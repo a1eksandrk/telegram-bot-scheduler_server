@@ -20,14 +20,14 @@ class ObserverService {
   }
 
   public watch = async (): Promise<void> => {
-    this.telegram.updates.on(UpdateType.MyChatMember, this.hanleMyChatMember)
+    this.telegram.updates.on(UpdateType.MyChatMember, this.handleMyChatMember)
 
     this.telegram.updates.startPolling()
       .then(() => { logger.info('Started polling bot updates from id = %s', this.botEntity.botId) })
       .catch(error => { logger.error('An error has occurred! %o', error) })
   }
 
-  private readonly hanleMyChatMember = async (context: ChatMemberContext): Promise<void> => {
+  private readonly handleMyChatMember = async (context: ChatMemberContext): Promise<void> => {
     const myChatMember = context.update?.my_chat_member
 
     if (!myChatMember) return
