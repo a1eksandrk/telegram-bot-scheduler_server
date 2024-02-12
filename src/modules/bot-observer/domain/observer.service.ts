@@ -57,7 +57,7 @@ class ObserverService {
 
   private async createOrUpdateChatEntity (chat: TelegramChat, foundEntity: ChatEntity | null): Promise<ChatEntity> {
     if (foundEntity) {
-      foundEntity.bots = [this.botEntity, ...foundEntity.bots]
+      foundEntity.bots = [this.botEntity, ...(foundEntity.bots ?? [])]
 
       return foundEntity
     }
