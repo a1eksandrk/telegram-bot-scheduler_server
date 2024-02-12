@@ -9,6 +9,8 @@ export type Message = {
   chatId: string
 }
 
+export type PartialMessage = Partial<Pick<Message, 'text' | 'timestamp'>>
+
 type GetMessagesFilter = {
   botId: string | null
   chatId: string | null
@@ -33,6 +35,19 @@ class MessageService {
     const savedMessage = await this.messageRepository.save(messageEntity)
 
     return new MessageDTO(savedMessage)
+  }
+
+  public async updateMessage (messageId: string, message: PartialMessage): Promise<MessageDTO | null> {
+    const messageEntity = await this.messageRepository.findOneById(messageId)
+
+    if (!messageEntity) return null
+
+    messageEntity.text = message.text ?? messageEntity.text
+    messageEntity.timestamp = message.timestamp ?? messageEntity.timestamp
+
+    const updatedMessage = await this.messageRepository.save(messageEntity)
+
+    return new MessageDTO(updatedMessage)
   }
 
   public async removeMessage (messageId: string): Promise<MessageDTO | null> {

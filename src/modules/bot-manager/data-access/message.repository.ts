@@ -27,6 +27,10 @@ class MessageRepository {
       .getMany()
   }
 
+  public async findOneById (messageId: string): Promise<MessageEntity | null> {
+    return await this.repository.findOneBy({ messageId })
+  }
+
   public async save (messageEntity: MessageEntity): Promise<MessageEntity> {
     return await this.repository.save(messageEntity)
   }

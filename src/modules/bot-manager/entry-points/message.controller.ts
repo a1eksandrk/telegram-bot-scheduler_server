@@ -1,7 +1,11 @@
-import { messageSchema, bodySchema, paramsSchema, querystringScheme } from './message.schema.js'
+import { messageSchema, addBodySchema, updateBodySchema, paramsSchema, querystringScheme } from './message.schema.js'
 
-import type { Message } from '../domain/message.service.js'
+import type { Message, PartialMessage } from '../domain/message.service.js'
 import type { FastifyInstance, RouteHandlerMethod, RouteShorthandOptions } from 'fastify'
+
+type MessageParams = {
+  messageId: string
+}
 
 type GetMessagesQuery = {
   botId: string | null
@@ -15,15 +19,26 @@ type AddMessageBody = {
   chatId: string
 }
 
-type DeleteMessageParams = {
-  messageId: string
+type UpdateMessageBody = {
+  text?: string
+  timestamp?: string
 }
 
 const addMessageOptions: RouteShorthandOptions = {
   schema: {
-    body: bodySchema,
+    body: addBodySchema,
     response: {
       201: messageSchema
+    }
+  }
+}
+
+const updateMessageOptions: RouteShorthandOptions = {
+  schema: {
+    params: paramsSchema,
+    body: updateBodySchema,
+    response: {
+      200: messageSchema
     }
   }
 }
@@ -56,6 +71,7 @@ class MessageController implements BotManagerController {
   public register = async (fastify: FastifyInstance): Promise<void> => {
     fastify.get('/messages', getMessagesRouteOptions, this.handleGetMessagesRoute)
     fastify.post('/message', addMessageOptions, this.handleAddMessageRoute)
+    fastify.post('/message/:messageId', updateMessageOptions, this.handleUpdateMessageRoute)
     fastify.delete('/message/:messageId', deleteMessageOptions, this.handleDeleteMessageRoute)
   }
 
@@ -88,9 +104,33 @@ class MessageController implements BotManagerController {
     }
   }
 
+  private readonly handleUpdateMessageRoute: RouteHandlerMethod = async (request, reply) => {
+    try {
+      const { messageId } = request.params as MessageParams
+      const body = request.body as UpdateMessageBody
+
+      if (!Object.values(body).length) return await reply.status(400).send()
+
+      const timestamp = body.timestamp ? new Date(body.timestamp) : undefined
+
+      const isInvalidTimestamp = timestamp !== undefined && isNaN(Number(timestamp))
+
+      if (isInvalidTimestamp) return await reply.status(400).send()
+
+      const message: PartialMessage = { ...body, timestamp }
+      const updatedMessage = await this.messageService.updateMessage(messageId, message)
+
+      if (!updatedMessage) return await reply.status(404).send()
+
+      reply.status(200).send(updatedMessage)
+    } catch (error) {
+      reply.status(500).send(error)
+    }
+  }
+
   private readonly handleDeleteMessageRoute: RouteHandlerMethod = async (request, reply) => {
     try {
-      const { messageId } = request.params as DeleteMessageParams
+      const { messageId } = request.params as MessageParams
       const messages = await this.messageService.removeMessage(messageId)
 
       if (!messages) return await reply.status(404).send()

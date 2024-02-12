@@ -14,11 +14,11 @@ class ChatEntity {
   @Column('text', { nullable: true })
     image: string | null
 
-  @ManyToMany(() => BotEntity, bot => bot.chats, { cascade: true })
+  @ManyToMany(() => BotEntity, bot => bot.chats)
   @JoinTable()
     bots: Relation<BotEntity[]>
 
-  @OneToMany(() => MessageEntity, message => message.chat, { onDelete: 'CASCADE' })
+  @OneToMany(() => MessageEntity, message => message.chat)
     messages: Relation<MessageEntity[]>
 }
 

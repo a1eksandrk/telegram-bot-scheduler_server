@@ -5,7 +5,7 @@ import ChatEntity from '#shared/entities/chat.entity.js'
 
 @Entity()
 class MessageEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('identity')
     messageId: string
 
   @Column('text')
@@ -14,10 +14,10 @@ class MessageEntity {
   @Column('timestamptz')
     timestamp: Date
 
-  @ManyToOne(() => BotEntity, bot => bot.messages, { cascade: true })
+  @ManyToOne(() => BotEntity, bot => bot.messages, { onDelete: 'CASCADE' })
     bot: Relation<BotEntity>
 
-  @ManyToOne(() => ChatEntity, chat => chat.messages, { cascade: true })
+  @ManyToOne(() => ChatEntity, chat => chat.messages, { onDelete: 'CASCADE' })
     chat: Relation<ChatEntity>
 }
 

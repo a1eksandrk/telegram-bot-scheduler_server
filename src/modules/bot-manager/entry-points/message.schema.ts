@@ -9,7 +9,7 @@ export const messageSchema: JSONSchema7 = {
   }
 }
 
-export const bodySchema: JSONSchema7 = {
+export const addBodySchema: JSONSchema7 = {
   type: 'object',
   required: ['text', 'timestamp', 'botId', 'chatId'],
   properties: {
@@ -17,6 +17,14 @@ export const bodySchema: JSONSchema7 = {
     timestamp: { type: 'string', format: 'date-time' },
     botId: { type: 'string' },
     chatId: { type: 'string' }
+  }
+}
+
+export const updateBodySchema: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    text: { type: 'string' },
+    timestamp: { type: 'string', format: 'date-time' }
   }
 }
 
