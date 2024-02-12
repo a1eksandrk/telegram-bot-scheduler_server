@@ -2,10 +2,10 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 class ArchivedMessageEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('identity')
     archivedMessageId: string
 
-  @Column('uuid')
+  @Column('int4')
     messageId: string
 
   @Column('text')

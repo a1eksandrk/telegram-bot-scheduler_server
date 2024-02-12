@@ -53,8 +53,6 @@ class BotService {
 
     botEntity.botId = botId
     botEntity.token = token
-    botEntity.chats = []
-    botEntity.messages = []
 
     return botEntity
   }

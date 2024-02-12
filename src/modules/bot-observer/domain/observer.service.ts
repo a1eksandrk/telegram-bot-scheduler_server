@@ -68,7 +68,6 @@ class ObserverService {
     chatEntity.name = buildChatName(chat)
     chatEntity.image = await this.getChatImageLink(chat)
     chatEntity.bots = [this.botEntity]
-    chatEntity.messages = []
 
     return chatEntity
   }
