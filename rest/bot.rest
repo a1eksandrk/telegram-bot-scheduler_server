@@ -1,7 +1,0 @@
-###
-PUT http://127.0.0.1:5005/api/bot/connect
-Content-Type: application/json
-
-{
-  "token": "6217434479:AAG7grOiJkdaWKqIIPIwnuDdbdNiVmWjDY4"
-}
