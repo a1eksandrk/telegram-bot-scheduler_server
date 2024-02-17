@@ -30,9 +30,10 @@ export const updateBodySchema: JSONSchema7 = {
 
 export const querystringScheme: JSONSchema7 = {
   type: 'object',
+  required: ['botId', 'chatId'],
   properties: {
-    botId: { type: ['string', 'null'], default: null },
-    chatId: { type: ['string', 'null'], default: null }
+    botId: { type: ['string'] },
+    chatId: { type: ['string'] }
   }
 }
 

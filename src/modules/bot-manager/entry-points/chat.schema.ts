@@ -19,7 +19,8 @@ export const paramsScheme: JSONSchema7 = {
 
 export const querystringScheme: JSONSchema7 = {
   type: 'object',
+  required: ['botId'],
   properties: {
-    botId: { type: ['string', 'null'], default: null }
+    botId: { type: ['string'] }
   }
 }
