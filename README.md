@@ -1,14 +1,14 @@
 # Telegram bot scheduler
 
-# Server side
+## Server side
 
 Server side of the application for delayed sending of messages via Telegram bot
 
-# Architecture
+## Architecture
 
 Modular three-layer architecture with domain decomposition
 
-# Technical stack
+## Technical stack
 
 - Node.js + TS
 - Fastify
