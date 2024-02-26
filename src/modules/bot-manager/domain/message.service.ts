@@ -68,9 +68,12 @@ class MessageService {
 
   private async createMessageEntity ({ text, timestamp, botId, chatId }: Message): Promise<MessageEntity | null> {
     const bot = await this.botRepository.findOneById(botId)
+
+    if (!bot) return null
+
     const chat = await this.chatRepository.findOneById(chatId)
 
-    if (!bot || !chat) return null
+    if (!chat) return null
 
     const messageEntity = new MessageEntity()
 

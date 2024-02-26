@@ -20,6 +20,7 @@
     "lint:fix": "eslint --ext .js,.ts src/ --fix"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/json-schema": "^7.0.15",
     "@types/node": "^20.10.5",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
@@ -37,6 +38,7 @@
     "@fastify/swagger": "^8.14.0",
     "@fastify/swagger-ui": "^2.1.0",
     "awilix": "^9.0.0",
+    "bcrypt": "^5.1.1",
     "cron": "^3.1.6",
     "fastify": "^4.25.2",
     "pg": "^8.11.3",

@@ -6,7 +6,7 @@ type ConnectBotBody = {
   token: string
 }
 
-export const connectBotOptions: RouteShorthandOptions = {
+const connectBotOptions: RouteShorthandOptions = {
   schema: {
     body: connectBotBody,
     response: {
@@ -32,7 +32,7 @@ class BotController implements BotManagerController {
       const { token } = request.body as ConnectBotBody
       const connectedBot = await this.botService.connectBot(token)
 
-      if (!connectedBot) return await reply.status(401).send()
+      if (!connectedBot) return await reply.status(400).send()
 
       const [isCreated, bot] = connectedBot
 

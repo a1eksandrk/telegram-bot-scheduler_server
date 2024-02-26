@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToMany, OneToMany, PrimaryColumn, Relation, JoinTable } from 'typeorm'
+import { Entity, Column, ManyToMany, OneToMany, PrimaryColumn, JoinTable, type Relation } from 'typeorm'
 
 import BotEntity from '#shared/entities/bot.entity.js'
 import MessageEntity from '#shared/entities/message.entity.js'

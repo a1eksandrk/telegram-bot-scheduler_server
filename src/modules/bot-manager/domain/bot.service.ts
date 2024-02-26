@@ -3,11 +3,6 @@ import BotDTO from './bot.dto.js'
 
 type ConnectedBot = [boolean, BotDTO]
 
-type Bot = {
-  botId: string
-  token: string
-}
-
 type BotInfo = {
   ok: true
   result: {
@@ -37,7 +32,7 @@ class BotService {
 
       const botId = String(json.result.id)
 
-      const botEntity = await this.createBotEntity({ botId, token })
+      const botEntity = await this.createBotEntity(botId, token)
       const savedBotEntity = await this.botRepository.save(botEntity)
 
       this.emitter.botConnected(savedBotEntity)
@@ -48,7 +43,7 @@ class BotService {
     }
   }
 
-  private async createBotEntity ({ botId, token }: Bot): Promise<BotEntity> {
+  private async createBotEntity (botId: string, token: string): Promise<BotEntity> {
     const botEntity = new BotEntity()
 
     botEntity.botId = botId

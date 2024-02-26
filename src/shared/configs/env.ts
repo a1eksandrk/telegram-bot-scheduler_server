@@ -21,7 +21,9 @@ const env = {
   DB_PORT: parseInt(process.env.DB_PORT, 10) || DEFAULT_DB_PORT,
   DB_NAME: process.env.DB_NAME,
   DB_USERNAME: process.env.DB_USERNAME,
-  DB_PASSWORD: process.env.DB_PASSWORD
+  DB_PASSWORD: process.env.DB_PASSWORD,
+
+  JWT_SECTER: process.env.JWT_SECTER
 }
 
 export default env

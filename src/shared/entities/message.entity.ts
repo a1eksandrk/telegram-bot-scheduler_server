@@ -1,11 +1,11 @@
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm'
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, type Relation } from 'typeorm'
 
 import BotEntity from '#shared/entities/bot.entity.js'
 import ChatEntity from '#shared/entities/chat.entity.js'
 
 @Entity()
 class MessageEntity {
-  @PrimaryGeneratedColumn('identity')
+  @PrimaryGeneratedColumn('increment')
     messageId: string
 
   @Column('text')
