@@ -12,6 +12,7 @@ type ChatParams = {
 
 const getChatsRouteOptions: RouteShorthandOptions = {
   schema: {
+    tags: ['bot-manager'],
     querystring: querystringScheme,
     response: {
       200: { type: 'array', items: chatScheme }
@@ -21,6 +22,7 @@ const getChatsRouteOptions: RouteShorthandOptions = {
 
 const сhatRouteOptions: RouteShorthandOptions = {
   schema: {
+    tags: ['bot-manager'],
     params: paramsScheme,
     response: {
       200: chatScheme

@@ -24,7 +24,18 @@ const container = awilix.createContainer<DI>({ injectionMode: awilix.InjectionMo
 const fastify = createFastify({ logger: true })
 
 fastify.register(cors, { origin: env.ALLOWED_ORIGINS, methods: env.ALLOWED_METHODS })
-fastify.register(swagger)
+fastify.register(swagger, {
+  swagger: {
+    info: {
+      title: 'Telegram bot scheduler swagger',
+      description: 'Server side of the application for delayed sending of messages via Telegram bot',
+      version: '0.0.1'
+    },
+    schemes: ['http'],
+    consumes: ['application/json'],
+    produces: ['application/json']
+  }
+})
 fastify.register(swaggerUi, {
   routePrefix: '/documentation',
   uiConfig: { docExpansion: 'list' },

@@ -26,6 +26,7 @@ type UpdateMessageBody = {
 
 const addMessageOptions: RouteShorthandOptions = {
   schema: {
+    tags: ['bot-manager'],
     body: addBodySchema,
     response: {
       201: messageSchema
@@ -35,6 +36,7 @@ const addMessageOptions: RouteShorthandOptions = {
 
 const updateMessageOptions: RouteShorthandOptions = {
   schema: {
+    tags: ['bot-manager'],
     params: paramsSchema,
     body: updateBodySchema,
     response: {
@@ -45,6 +47,7 @@ const updateMessageOptions: RouteShorthandOptions = {
 
 const getMessagesRouteOptions: RouteShorthandOptions = {
   schema: {
+    tags: ['bot-manager'],
     querystring: querystringScheme,
     response: {
       200: { type: 'array', items: messageSchema }
@@ -54,6 +57,7 @@ const getMessagesRouteOptions: RouteShorthandOptions = {
 
 const deleteMessageOptions: RouteShorthandOptions = {
   schema: {
+    tags: ['bot-manager'],
     params: paramsSchema,
     response: {
       200: messageSchema

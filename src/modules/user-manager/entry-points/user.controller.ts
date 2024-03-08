@@ -15,6 +15,7 @@ type DeleteUserParams = {
 
 const createUserOptions: RouteShorthandOptions = {
   schema: {
+    tags: ['user-manager'],
     body: createUserBody,
     response: {
       201: userScheme
@@ -24,6 +25,7 @@ const createUserOptions: RouteShorthandOptions = {
 
 const deleteUserOptions: RouteShorthandOptions = {
   schema: {
+    tags: ['user-manager'],
     params: deleteUserParams,
     response: {
       200: userScheme

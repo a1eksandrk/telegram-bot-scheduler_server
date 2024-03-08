@@ -8,6 +8,7 @@ type ConnectBotBody = {
 
 const connectBotOptions: RouteShorthandOptions = {
   schema: {
+    tags: ['bot-manager'],
     body: connectBotBody,
     response: {
       200: botScheme,
